@@ -1,132 +1,784 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎈🎂عيـد ميـلاد سعـيد 🎉🤍</title>
+  <title>🎈🎂 عيـد ميـلاد سعـيد 🎉🤍</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Tajawal:wght@300;400;500;700;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ============================================ */
+    /*          RESET & BASE STYLES                 */
+    /* ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      text-align: center;
-      background-color: #8B0000;
-      color: white;
-      font-family: 'Tajawal', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: 'Tajawal', 'Outfit', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      padding: 20px;
+      padding-bottom: 60px;
+      direction: rtl;
+    }
+
+    /* ============================================ */
+    /*     ANIMATED GRADIENT BACKGROUND             */
+    /* ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        #0f0015 0%,
+        #1a0a2e 15%,
+        #2d1148 30%,
+        #44185c 45%,
+        #5c1a5e 55%,
+        #3d0f3d 70%,
+        #1f0a2e 85%,
+        #0a0012 100%
+      );
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      z-index: -3;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      25% { background-position: 100% 0%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ============================================ */
+    /*         FLOATING STARS / PARTICLES           */
+    /* ============================================ */
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -2;
       overflow: hidden;
     }
-    h1 {
-      font-size: 3rem;
-      margin-top: 50px;
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+      animation: twinkle var(--duration) ease-in-out infinite;
+      opacity: 0;
     }
-    /* النمط العام للأزرار */
-    button {
-      padding: 10px 15px;
-      font-size: 1rem;
-      background-color: white;
-      color: #8B0000;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin: 5px;
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: var(--max-opacity); transform: scale(1); }
+    }
+
+    /* ============================================ */
+    /*        FLOATING HEARTS                       */
+    /* ============================================ */
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -80px;
+      font-size: var(--size);
+      animation: floatUp var(--duration) linear infinite;
+      animation-delay: var(--delay);
+      opacity: 0;
+      filter: blur(0.5px);
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0) rotate(0deg) scale(0.5);
+      }
+      10% {
+        opacity: 0.7;
+        transform: translateY(-10vh) translateX(10px) rotate(15deg) scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateY(-50vh) translateX(-20px) rotate(-10deg) scale(0.9);
+      }
+      90% {
+        opacity: 0.2;
+        transform: translateY(-90vh) translateX(15px) rotate(20deg) scale(0.7);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-110vh) translateX(0) rotate(0deg) scale(0.5);
+      }
+    }
+
+    /* ============================================ */
+    /*           MAIN TITLE                         */
+    /* ============================================ */
+    .main-title {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      font-weight: 800;
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #FFD700, #FFA500, #FF6B9D, #FFD700);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerText 4s ease-in-out infinite, titleFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
       position: relative;
     }
-    button:hover {
-      background-color: #ffcccc;
+
+    @keyframes shimmerText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    /* زر تشغيل الأغنية يبدأ مخفي */
-    #playButton {
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
+
+    @keyframes titleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
-    /* عند إضافة الكلاس show يصير ظاهر */
-    #playButton.show {
-      opacity: 1;
+
+    .main-title .emoji-decor {
+      -webkit-text-fill-color: initial;
+      font-size: clamp(1.8rem, 5vw, 3rem);
     }
+
+    .subtitle {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+      animation: fadeInUp 1.5s ease-out 0.5s both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================ */
+    /*       GLASSMORPHISM COVER CARD               */
+    /* ============================================ */
     .cover {
       position: relative;
-      width: 80%;
-      max-width: 600px;
-      margin: 20px auto;
-      background-color: gold;
-      text-align: center;
-      padding: 20px;
-      font-size: 1.5rem;
-      font-weight: bold;
+      width: 90%;
+      max-width: 520px;
+      margin: 10px auto 20px;
+      padding: 40px 30px;
       cursor: pointer;
-      transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-      border-radius: 10px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: coverPulse 3s ease-in-out infinite, fadeInUp 1s ease-out 1s both;
+      overflow: hidden;
     }
-    /* تأثير عند النقر على الغلاف */
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle at 30% 50%,
+        rgba(255, 107, 157, 0.08) 0%,
+        transparent 50%
+      );
+      pointer-events: none;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+    }
+
+    @keyframes coverPulse {
+      0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+      50% { box-shadow: 0 8px 40px rgba(255, 107, 157, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
+    }
+
+    .cover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 48px rgba(255, 107, 157, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .cover:active {
+      transform: scale(0.98);
+    }
+
+    .cover-emoji {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 15px;
+      animation: bounceEmoji 2s ease-in-out infinite;
+    }
+
+    @keyframes bounceEmoji {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-10px) rotate(5deg); }
+      75% { transform: translateY(-5px) rotate(-3deg); }
+    }
+
+    .cover-text {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.9;
+    }
+
+    .cover-hint {
+      display: block;
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: rgba(255, 215, 0, 0.7);
+      letter-spacing: 2px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
     .cover.hidden {
-      transform: translateY(100px);
+      transform: translateY(60px) scale(0.9) rotateX(10deg);
       opacity: 0;
+      pointer-events: none;
     }
-    #greeting {
+
+    /* ============================================ */
+    /*      GLASSMORPHISM GREETING CARD             */
+    /* ============================================ */
+    #greetingCard {
       display: none;
-    }
-    /* صندوق التحكم بالأغنية مخفي أولاً مع تأثير انزلاقي من الأعلى */
-    .player-controls {
-      margin: 20px auto;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      border-radius: 15px;
-      width: 80%;
-      max-width: 400px;
-      opacity: 0;
-      transform: translateY(-50px);
-      transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+      width: 90%;
+      max-width: 560px;
+      margin: 10px auto 25px;
+      padding: 45px 35px;
+      border-radius: 28px;
       text-align: center;
-      display: none;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      animation: cardReveal 1s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
-    /* عند ظهور صندوق التحكم يتم إزالة التأثير */
+
+    @keyframes cardReveal {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+        backdrop-filter: blur(0px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        backdrop-filter: blur(24px);
+      }
+    }
+
+    #greetingCard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    }
+
+    #greetingCard::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        ellipse at 50% 0%,
+        rgba(255, 107, 157, 0.06) 0%,
+        transparent 50%
+      );
+      pointer-events: none;
+    }
+
+    .greeting-cake-emoji {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 20px;
+      animation: cakeFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes cakeFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    .greeting-text {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(1rem, 2.8vw, 1.2rem);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 2.1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .greeting-text .line {
+      display: block;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: lineReveal 0.7s ease-out forwards;
+    }
+
+    @keyframes lineReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .greeting-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+      margin: 25px auto;
+      border-radius: 2px;
+    }
+
+    .greeting-footer {
+      margin-top: 10px;
+      font-size: 1.8rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 3.5s both;
+    }
+
+    /* ============================================ */
+    /*   PLAY SONG BUTTON (داخل البطاقة)           */
+    /* ============================================ */
+    .play-btn-wrapper {
+      margin-top: 25px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 2;
+    }
+
+    .play-btn-wrapper.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      font-weight: 500;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(147, 51, 234, 0.3));
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 50px;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      animation: btnGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes btnGlow {
+      0%, 100% { box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15); }
+      50% { box-shadow: 0 4px 30px rgba(255, 107, 157, 0.4); }
+    }
+
+    .play-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transition: left 0.6s;
+    }
+
+    .play-btn:hover::before {
+      left: 100%;
+    }
+
+    .play-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 107, 157, 0.35);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .play-btn:active {
+      transform: scale(0.97);
+    }
+
+    .play-btn .btn-icon {
+      font-size: 1.3rem;
+      animation: musicPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes musicPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* ============================================ */
+    /*      PREMIUM MUSIC PLAYER                    */
+    /* ============================================ */
+    .player-controls {
+      display: none;
+      width: 90%;
+      max-width: 420px;
+      margin: 20px auto;
+      padding: 0;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 12px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      opacity: 0;
+      transform: translateY(-30px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      position: relative;
+      direction: ltr;
+      overflow: hidden;
+    }
+
+    .player-controls::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      z-index: 1;
+    }
+
     .player-controls.visible {
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* === الجزء العلوي: الخلفية المتوهجة + معلومات الأغنية === */
+    .player-top {
+      position: relative;
+      padding: 28px 28px 20px;
+      background: linear-gradient(180deg, rgba(255, 107, 157, 0.08) 0%, transparent 100%);
+    }
+
+    .player-top::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    /* أيقونة الموسيقى الدوارة */
+    .player-disc {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(147, 51, 234, 0.2));
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow:
+        0 0 20px rgba(255, 107, 157, 0.15),
+        inset 0 0 15px rgba(255, 107, 157, 0.05);
+      position: relative;
+    }
+
+    .player-disc.spinning {
+      animation: discSpin 3s linear infinite;
+    }
+
+    @keyframes discSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* removed disc center hole */
+
+    .player-label {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      direction: rtl;
+    }
+
+    .player-song-name {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .player-artist {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.4);
+      direction: rtl;
+    }
+
+    /* === شريط التقدم === */
+    .player-progress-section {
+      padding: 16px 28px 0;
+    }
+
     .progress {
       width: 100%;
       height: 5px;
-      background: #ddd;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 5px;
-      margin: 10px 0;
-      overflow: hidden;
+      margin: 0;
+      cursor: pointer;
+      position: relative;
+      transition: height 0.2s;
+      direction: ltr;
+      overflow: visible;
     }
+
+    .progress:hover {
+      height: 7px;
+    }
+
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: gold;
-      transition: width 0.5s;
+      background: linear-gradient(90deg, #FF6B9D, #c084fc, #FFD700);
+      background-size: 200% 100%;
+      animation: progressShimmer 3s ease infinite;
+      border-radius: 5px;
+      transition: width 0.3s linear;
+      position: relative;
     }
+
+    @keyframes progressShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 50%;
+      transform: translateY(-50%) scale(0);
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 107, 157, 0.5), 0 0 4px rgba(255,255,255,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .progress:hover .progress-bar::after {
+      transform: translateY(-50%) scale(1);
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-bottom: 4px;
+    }
+
+    .time-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 300;
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+    }
+
+    /* === Visualizer المتحرك === */
+    .visualizer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      height: 20px;
+      margin-top: 2px;
+    }
+
+    .viz-bar {
+      width: 3px;
+      background: linear-gradient(180deg, #FF6B9D, #c084fc);
+      border-radius: 2px;
+      transition: height 0.15s ease;
+      animation: vizPause 0.5s ease infinite alternate;
+    }
+
+    .viz-bar.active {
+      animation: vizDance var(--speed) ease-in-out infinite alternate;
+    }
+
+    @keyframes vizDance {
+      0% { height: var(--min-h); opacity: 0.6; }
+      100% { height: var(--max-h); opacity: 1; }
+    }
+
+    @keyframes vizPause {
+      0%, 100% { height: 3px; opacity: 0.3; }
+    }
+
+    /* === أزرار التحكم === */
+    .player-bottom {
+      padding: 14px 28px 24px;
+    }
+
     .controls-row {
       display: flex;
       justify-content: center;
       align-items: center;
+      gap: 18px;
     }
-    /* التأكيد على ظهور أزرار التحكم داخل صندوق التحكم */
-    .player-controls button {
-      opacity: 1 !important;
-      top: 0 !important;
-      transition: none;
+
+    .ctrl-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
-    /* تأثير إضاءة على العنوان */
-    @keyframes glow {
-      0%, 100% {
-        text-shadow: 0 0 5px #fff, 0 0 10px #ff0, 0 0 15px #ff0;
-      }
-      50% {
-        text-shadow: 0 0 20px #fff, 0 0 30px #ff0, 0 0 40px #ff0;
-      }
+
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: scale(1.1);
+      color: #fff;
     }
-    .glow {
-      animation: glow 2s infinite;
+
+    .ctrl-btn.play-pause {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, rgba(255, 107, 157, 0.35), rgba(147, 51, 234, 0.35));
+      border: 1px solid rgba(255, 107, 157, 0.25);
+      box-shadow:
+        0 4px 20px rgba(255, 107, 157, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
-    
-    /* تأثير الظلال للغلاف عند المرور */
-    .cover:hover {
-      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+
+    .ctrl-btn.play-pause:hover {
+      box-shadow:
+        0 6px 30px rgba(255, 107, 157, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transform: scale(1.08);
     }
-    
-    /* نمط القماش المستخدم لتأثير الكونفيتي */
+
+    .ctrl-btn.play-pause.is-playing {
+      animation: playBtnPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes playBtnPulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(255, 107, 157, 0.2); }
+      50% { box-shadow: 0 4px 30px rgba(255, 107, 157, 0.45); }
+    }
+
+    /* ============================================ */
+    /*          CONFETTI CANVAS                     */
+    /* ============================================ */
     #confettiCanvas {
       position: fixed;
       top: 0;
@@ -136,127 +788,733 @@
       pointer-events: none;
       z-index: 999;
     }
+
+    /* ============================================ */
+    /*          RESPONSIVE                          */
+    /* ============================================ */
+    /* ===== الهواتف الصغيرة (أقل من 380px) ===== */
+    @media (max-width: 380px) {
+      body {
+        padding: 10px;
+        padding-bottom: 30px;
+      }
+
+      .main-title {
+        font-size: 1.8rem;
+        margin-top: 15px;
+        margin-bottom: 8px;
+      }
+
+      .main-title .emoji-decor {
+        font-size: 1.4rem;
+      }
+
+      .subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 18px;
+        letter-spacing: 2px;
+      }
+
+      .cover {
+        padding: 25px 18px;
+        border-radius: 18px;
+        margin: 8px auto 15px;
+      }
+
+      .cover-emoji {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .cover-text {
+        font-size: 0.95rem;
+        line-height: 1.8;
+      }
+
+      #greetingCard {
+        padding: 28px 18px;
+        border-radius: 18px;
+        margin: 8px auto 15px;
+      }
+
+      .greeting-cake-emoji {
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+      }
+
+      .greeting-text {
+        font-size: 0.92rem;
+        line-height: 1.95;
+      }
+
+      .greeting-divider {
+        margin: 18px auto;
+      }
+
+      .greeting-footer {
+        font-size: 1.4rem;
+      }
+
+      .play-btn {
+        padding: 11px 20px;
+        font-size: 0.85rem;
+      }
+
+      .play-btn .btn-icon {
+        font-size: 1.1rem;
+      }
+
+      .player-controls {
+        border-radius: 20px;
+        margin: 10px auto;
+      }
+
+      .player-top {
+        padding: 20px 18px 14px;
+      }
+
+      .player-disc {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+      }
+
+      .player-song-name {
+        font-size: 1rem;
+      }
+
+      .player-artist {
+        font-size: 0.72rem;
+      }
+
+      .player-progress-section {
+        padding: 12px 18px 0;
+      }
+
+      .player-bottom {
+        padding: 10px 18px 18px;
+      }
+
+      .ctrl-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .ctrl-btn.play-pause {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+
+      .visualizer {
+        height: 16px;
+      }
+
+      .loader-emoji {
+        font-size: 3rem;
+      }
+
+      .loader-text {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* ===== الهواتف العادية (380px - 480px) ===== */
+    @media (min-width: 381px) and (max-width: 480px) {
+      body {
+        padding: 14px;
+        padding-bottom: 35px;
+      }
+
+      .main-title {
+        font-size: 2rem;
+        margin-top: 18px;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 22px;
+        letter-spacing: 3px;
+      }
+
+      .cover {
+        padding: 30px 22px;
+        border-radius: 20px;
+      }
+
+      .cover-emoji {
+        font-size: 2.8rem;
+      }
+
+      .cover-text {
+        font-size: 1rem;
+      }
+
+      #greetingCard {
+        padding: 32px 22px;
+        border-radius: 22px;
+      }
+
+      .greeting-cake-emoji {
+        font-size: 3rem;
+      }
+
+      .greeting-text {
+        font-size: 1rem;
+        line-height: 2;
+      }
+
+      .play-btn {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+      }
+
+      .player-controls {
+        border-radius: 22px;
+      }
+
+      .player-top {
+        padding: 22px 22px 16px;
+      }
+
+      .player-disc {
+        width: 56px;
+        height: 56px;
+      }
+
+      .player-progress-section {
+        padding: 14px 22px 0;
+      }
+
+      .player-bottom {
+        padding: 12px 22px 20px;
+      }
+
+      .ctrl-btn {
+        width: 42px;
+        height: 42px;
+      }
+
+      .ctrl-btn.play-pause {
+        width: 54px;
+        height: 54px;
+      }
+    }
+
+    /* ===== الهواتف الكبيرة والتابلت (481px - 767px) ===== */
+    @media (min-width: 481px) and (max-width: 767px) {
+      body {
+        padding: 20px;
+        padding-bottom: 50px;
+      }
+
+      .main-title {
+        margin-top: 25px;
+      }
+    }
+
+    /* ===== الشاشات الكبيرة (768px+) ===== */
+    @media (min-width: 768px) {
+      body {
+        padding: 30px;
+        padding-bottom: 80px;
+      }
+
+      .main-title {
+        margin-top: 50px;
+      }
+    }
+
+    /* ===== تحسينات اللمس للموبايل ===== */
+    @media (hover: none) and (pointer: coarse) {
+      .cover {
+        animation: coverPulse 3s ease-in-out infinite, fadeInUp 1s ease-out 1s both;
+      }
+
+      .cover:active {
+        transform: scale(0.96);
+        transition: transform 0.15s;
+      }
+
+      .play-btn:active {
+        transform: scale(0.95);
+        transition: transform 0.15s;
+      }
+
+      .ctrl-btn:active {
+        transform: scale(0.9);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      /* إزالة hover effects على الموبايل لأن ما يحتاجها */
+      .cover:hover {
+        transform: none;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .play-btn:hover {
+        transform: none;
+      }
+
+      .progress:hover {
+        height: 4px;
+      }
+
+      /* جعل شريط التقدم أسمك للموبايل عشان يسهل الضغط */
+      .progress {
+        height: 6px;
+      }
+
+      .ctrl-btn:hover {
+        transform: none;
+        background: rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    /* ============================================ */
+    /*        PAGE LOAD ANIMATION                   */
+    /* ============================================ */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0012;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .page-loader.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-emoji {
+      font-size: 4rem;
+      animation: loaderBounce 1s ease-in-out infinite;
+    }
+
+    @keyframes loaderBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.1); }
+    }
+
+    .loader-text {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 15px;
+      letter-spacing: 2px;
+    }
+
+    /* ============================================ */
+    /*          SCROLL INDICATOR                    */
+    /* ============================================ */
+    .scroll-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .scroll-hint.visible {
+      opacity: 1;
+    }
+
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid rgba(255,255,255,0.3);
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      transform: rotate(45deg);
+      animation: scrollBounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.3; }
+      50% { transform: rotate(45deg) translateY(6px); opacity: 0.8; }
+    }
   </style>
 </head>
 <body>
-  <!-- قماش الكونفيتي لتأثير الورق الملون -->
-  <canvas id="confettiCanvas"></canvas>
-  
-  <h2 class="glow">🎈🎂Happy Birthday 🎉🤍</h2>
-  <div class="cover" onclick="revealText()">Tap here there might be a little surprise waiting for you 🎉😉</div>
-  <p id="greeting">
-Happy Birthday to the sweetest and most amazing person ever 🎂♥️🎉! Hope your day’s full of good vibes, laughter,
-    and all the things that make you smile. You seriously deserve all the happiness in the world! Having you around is such a blessing 
-    you bring so much joy everywhere you go 💫
-    I really hope this year brings you closer to your dreams and fills your life with endless smiles and moments you’ll never forget You’re literally the best 🌸🫶 
-  
-</p>
-  <!-- زر تشغيل الأغنية مخفي حتى يظهر بعد النقر على الغلاف -->
-  <button id="playButton" onclick="playSong()">💙 🎶Tap here this song’s for you</button>
-  <audio id="song" src="song.mp3" ontimeupdate="updateProgress()"></audio>
-  <!-- صندوق التحكم مخفي حتى يتم تفعيله -->
-  <div class="player-controls" id="controls">
-    <p id="time">0:00</p>
-    <div class="progress">
-      <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    <div class="controls-row">
-      <button onclick="rewind()">⏪</button>
-      <button onclick="togglePlay()">⏯️</button>
-      <button onclick="forward()">⏩</button>
+
+  <!-- شاشة التحميل -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-content">
+      <div class="loader-emoji">🎂</div>
+      <div class="loader-text">جاري تحضير مفاجأة لك...</div>
     </div>
   </div>
-  
+
+  <!-- كانفاس الكونفيتي -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- النجوم العائمة -->
+  <div class="stars-container" id="starsContainer"></div>
+
+  <!-- القلوب العائمة -->
+  <div class="floating-hearts" id="heartsContainer"></div>
+
+  <!-- العنوان الرئيسي -->
+  <h1 class="main-title">
+    <span class="emoji-decor">🎈</span>
+    عيد ميلاد سعيد!
+    <span class="emoji-decor">🎈</span>
+  </h1>
+  <p class="subtitle">✨سنـه سعيده هـيا ✨</p>
+
+  <!-- بطاقة الغلاف -->
+  <div class="cover" id="coverCard" onclick="revealText()">
+    <span class="cover-emoji">🎁</span>
+    <p class="cover-text">
+     دوسي هنا يا أحلى بنية بآشور 
+    </p>
+  </div>
+
+  <!-- بطاقة المعايدة (Glassmorphism) -->
+  <div id="greetingCard">
+    <span class="greeting-cake-emoji">🎂</span>
+    <div class="greeting-text" id="greetingText"></div>
+    <div class="greeting-divider"></div>
+    <div class="greeting-footer">🤍🌸🫶🌸🤍</div>
+
+    <!-- زر تشغيل الأغنية (داخل البطاقة) -->
+    <div class="play-btn-wrapper" id="playBtnWrapper">
+      <button class="play-btn" id="playButton" onclick="playSong()">
+        <span class="btn-icon">🎶</span>
+اكو شي بعد ناقص.. دوسي هنا حتى تسمعي 🎵👀      </button>
+    </div>
+  </div>
+
+  <!-- عنصر الصوت -->
+  <audio id="song" src="song.mp3" ontimeupdate="updateProgress()"></audio>
+
+  <!-- مشغل الموسيقى المحسّن -->
+  <div class="player-controls" id="controls">
+    <!-- الجزء العلوي -->
+    <div class="player-top">
+      <div class="player-disc" id="playerDisc">🎵</div>
+      <div class="player-label">يتم التشغيل الآن</div>
+      <div class="player-song-name">Happy Birthday هيا 🌸</div>
+    </div>
+
+    <!-- شريط التقدم -->
+    <div class="player-progress-section">
+      <div class="progress" onclick="seekSong(event)">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="time-row">
+        <div class="time-display" id="currentTime">0:00</div>
+        <div class="visualizer" id="visualizer">
+          <div class="viz-bar" style="--speed:0.4s;--min-h:3px;--max-h:14px"></div>
+          <div class="viz-bar" style="--speed:0.3s;--min-h:4px;--max-h:18px"></div>
+          <div class="viz-bar" style="--speed:0.5s;--min-h:2px;--max-h:12px"></div>
+          <div class="viz-bar" style="--speed:0.35s;--min-h:5px;--max-h:20px"></div>
+          <div class="viz-bar" style="--speed:0.45s;--min-h:3px;--max-h:15px"></div>
+          <div class="viz-bar" style="--speed:0.28s;--min-h:4px;--max-h:17px"></div>
+          <div class="viz-bar" style="--speed:0.38s;--min-h:2px;--max-h:13px"></div>
+        </div>
+        <div class="time-display" id="totalTime">0:00</div>
+      </div>
+    </div>
+
+    <!-- أزرار التحكم -->
+    <div class="player-bottom">
+      <div class="controls-row">
+        <button class="ctrl-btn" onclick="rewind()" title="ترجيع ٥ ثواني">⏪</button>
+        <button class="ctrl-btn play-pause" onclick="togglePlay()" id="playPauseBtn" title="تشغيل / إيقاف">▶</button>
+        <button class="ctrl-btn" onclick="forward()" title="تقديم ٥ ثواني">⏩</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مؤشر التمرير -->
+  <div class="scroll-hint" id="scrollHint">
+    <div class="scroll-arrow"></div>
+  </div>
+
   <script>
     // ===========================
-    // وظائف تشغيل الأغنية والعرض
+    // شاشة التحميل
+    // ===========================
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.getElementById('pageLoader').classList.add('hide');
+      }, 1800);
+    });
+
+    // ===========================
+    // إنشاء النجوم العائمة
+    // ===========================
+    (function generateStars() {
+      const container = document.getElementById('starsContainer');
+      const count = 80;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        const size = Math.random() * 3 + 1;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', (Math.random() * 4 + 2) + 's');
+        star.style.setProperty('--max-opacity', (Math.random() * 0.6 + 0.2).toString());
+        star.style.animationDelay = (Math.random() * 5) + 's';
+        container.appendChild(star);
+      }
+    })();
+
+    // ===========================
+    // إنشاء القلوب العائمة
+    // ===========================
+    (function generateHearts() {
+      const container = document.getElementById('heartsContainer');
+      const emojis = ['💖', '💗', '✨', '💫', '🌟', '💝', '🤍'];
+      const count = 15;
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.setProperty('--size', (Math.random() * 1.2 + 0.8) + 'rem');
+        heart.style.setProperty('--duration', (Math.random() * 8 + 8) + 's');
+        heart.style.setProperty('--delay', (Math.random() * 10) + 's');
+        container.appendChild(heart);
+      }
+    })();
+
+    // ===========================
+    // أسطر نص المعايدة
+    // ===========================
+    const greetingLines = [
+      "هيا 🌸",
+      "كل عام وأنتي بألف خير",
+      "يا أحلى من كبر سنة!",
+      "",
+      "يارب أيامج كلها ضحك وسعادة،",
+      "وميلادج يكون بداية",
+      "لأشياء تخبل تشبهج ✨",
+      "",
+      "أتمنى هالسنة تقربج",
+      "من أحلامج 💫",
+      "",
+      "تستاهلين كل الخير",
+      "والفرح اللي بالدنيا،",
+      "ويارب ما تفاركج",
+      "هالابتسامة الحلوة 😊",
+      "",
+      "يا أحلى وأحسن وحدة بآشور 🤍",
+      "",
+      "طبعاً هذا الشي قليل بحقج",
+      "وتستاهلين شي أحلى من هيج،",
+      "بس تدرين وقت ابد ماعندي 😅",
+      "",
+      "Happy Birthday",
+      "لألطف إنسانة 🎉🫶"
+    ];
+
+    // ===========================
+    // كشف بطاقة المعايدة
     // ===========================
     function revealText() {
-      // إخفاء الغلاف بتأثير انزلاقي للأسفل
-      document.querySelector('.cover').classList.add('hidden');
-      setTimeout(() => {
-        document.querySelector('.cover').style.display = 'none';
-        document.getElementById('greeting').style.display = 'block';
-        // إظهار زر تشغيل الأغنية بعد إخفاء الغلاف
-        document.getElementById('playButton').classList.add('show');
-        // بدء تأثير الكونفيتي للاحتفال
+      const cover = document.getElementById('coverCard');
+      const card = document.getElementById('greetingCard');
+      const playBtnWrapper = document.getElementById('playBtnWrapper');
+
+      cover.classList.add('hidden');
+
+      setTimeout(function() {
+        cover.style.display = 'none';
+        card.style.display = 'block';
+
+        // إظهار النص سطر بسطر
+        const textContainer = document.getElementById('greetingText');
+        greetingLines.forEach(function(line, index) {
+          const span = document.createElement('span');
+          span.classList.add('line');
+          if (line === "") {
+            span.innerHTML = '<br>';
+          } else {
+            span.textContent = line;
+          }
+          span.style.animationDelay = (index * 0.15 + 0.3) + 's';
+          textContainer.appendChild(span);
+        });
+
+        // إظهار زر تشغيل الأغنية بعد انتهاء ظهور النص
+        const totalDelay = greetingLines.length * 0.15 + 1;
+        setTimeout(function() {
+          playBtnWrapper.classList.add('show');
+        }, totalDelay * 1000);
+
+        // مؤشر التمرير إذا المحتوى أطول من الشاشة
+        setTimeout(function() {
+          if (document.body.scrollHeight > window.innerHeight) {
+            document.getElementById('scrollHint').classList.add('visible');
+            setTimeout(function() {
+              document.getElementById('scrollHint').classList.remove('visible');
+            }, 4000);
+          }
+        }, 2000);
+
+        // بدء تأثير الكونفيتي
         startConfetti();
-      }, 1000);
+      }, 800);
     }
-    
+
+    // ===========================
+    // وظائف مشغل الموسيقى المحسّن
+    // ===========================
     function enableControls() {
-      let controls = document.getElementById("controls");
+      const controls = document.getElementById("controls");
       controls.style.display = "block";
-      // تفعيل تأثير الانزلاق من الأعلى بعد تأخير بسيط
-      setTimeout(() => {
+      setTimeout(function() {
         controls.classList.add("visible");
       }, 100);
     }
-    
+
+    // تشغيل/إيقاف الـ Visualizer
+    function setVisualizerState(playing) {
+      const bars = document.querySelectorAll('.viz-bar');
+      bars.forEach(function(bar) {
+        if (playing) {
+          bar.classList.add('active');
+        } else {
+          bar.classList.remove('active');
+        }
+      });
+    }
+
+    // تشغيل/إيقاف دوران الأيقونة
+    function setDiscState(playing) {
+      const disc = document.getElementById('playerDisc');
+      if (playing) {
+        disc.classList.add('spinning');
+      } else {
+        disc.classList.remove('spinning');
+      }
+    }
+
+    // تحديث حالة زر التشغيل
+    function updatePlayState(playing) {
+      const btn = document.getElementById('playPauseBtn');
+      btn.textContent = playing ? '⏸' : '▶';
+      if (playing) {
+        btn.classList.add('is-playing');
+      } else {
+        btn.classList.remove('is-playing');
+      }
+      setVisualizerState(playing);
+      setDiscState(playing);
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return m + ":" + (s < 10 ? "0" + s : s);
+    }
+
     function playSong() {
-      let song = document.getElementById("song");
+      const song = document.getElementById("song");
       song.play();
+      updatePlayState(true);
       enableControls();
-      // إرسال إشعار عند الضغط على زر التشغيل
+      // إخفاء زر التشغيل بسلاسة
+      const wrapper = document.getElementById('playBtnWrapper');
+      wrapper.style.opacity = '0';
+      wrapper.style.transform = 'translateY(10px)';
+      setTimeout(function() { wrapper.style.display = 'none'; }, 500);
       sendTelegramMessage("🎶 تم تشغيل الأغنية.");
     }
-    
+
     function updateProgress() {
-      let song = document.getElementById("song");
-      let progressBar = document.getElementById("progress-bar");
-      let timeDisplay = document.getElementById("time");
-      
+      const song = document.getElementById("song");
+      const progressBar = document.getElementById("progress-bar");
+      const currentTimeEl = document.getElementById("currentTime");
+      const totalTimeEl = document.getElementById("totalTime");
+
       if (!isNaN(song.duration)) {
-        let minutes = Math.floor(song.currentTime / 60);
-        let seconds = Math.floor(song.currentTime % 60);
-        timeDisplay.innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+        currentTimeEl.textContent = formatTime(song.currentTime);
+        totalTimeEl.textContent = formatTime(song.duration);
         progressBar.style.width = (song.currentTime / song.duration) * 100 + "%";
       }
     }
-    
+
     function togglePlay() {
-      let song = document.getElementById("song");
+      const song = document.getElementById("song");
       if (song.paused) {
         song.play();
+        updatePlayState(true);
       } else {
         song.pause();
+        updatePlayState(false);
       }
     }
-    
+
     function rewind() {
-      let song = document.getElementById("song");
+      const song = document.getElementById("song");
       if (!isNaN(song.duration)) {
         song.currentTime = Math.max(0, song.currentTime - 5);
       }
     }
-    
+
     function forward() {
-      let song = document.getElementById("song");
+      const song = document.getElementById("song");
       if (!isNaN(song.duration)) {
         song.currentTime = Math.min(song.duration, song.currentTime + 5);
       }
     }
-    
+
+    function seekSong(event) {
+      const song = document.getElementById("song");
+      const progressContainer = event.currentTarget;
+      if (!isNaN(song.duration)) {
+        const rect = progressContainer.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const ratio = x / rect.width;
+        song.currentTime = ratio * song.duration;
+      }
+    }
+
+    // مراقبة انتهاء الأغنية
+    document.getElementById("song").addEventListener("ended", function() {
+      updatePlayState(false);
+    });
+
     // ===========================
-    // تكامل بوت تلجرام لتسجيل البيانات
+    // تكامل بوت تلجرام
     // ===========================
-    const telegramBotToken = "7890478414:AAGkrQ7HwgdU6ppweqOpfvygwmeI1tyJvKw"; // استبدل بالتوكن الخاص ببوتك
-    const telegramChatId = "651561282"; // استبدل بالآيدي الخاص بالدردشة أو القناة
-    
+    const telegramBotToken = "7890478414:AAGkrQ7HwgdU6ppweqOpfvygwmeI1tyJvKw";
+    const telegramChatId = "651561282";
+
     function sendTelegramMessage(message) {
       fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: telegramChatId,
-          text: message
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: telegramChatId, text: message }),
         keepalive: true
       });
     }
-    
+
     function formatDate(date) {
       let day = date.getDate();
       let month = date.getMonth() + 1;
@@ -269,93 +1527,75 @@ Happy Birthday to the sweetest and most amazing person ever 🎂♥️🎉! Hope
       if (hours === 0) hours = 12;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
-      return `${day}‏/${month}‏/${year} ${hours}:${minutes}:${seconds} ${period}`;
+      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${period}`;
     }
-    
-    // تسجيل وقت الدخول مع بيانات مفصلة
+
+    // تسجيل وقت الدخول
     let loginTime = new Date();
     let userAgentInfo = navigator.userAgent;
     sendTelegramMessage(`🚀 دخول جديد للموقع!\n📅 التاريخ: ${formatDate(loginTime)}\n🖥 الجهاز: ${userAgentInfo}`);
-    
-    // إرسال إشعار عند إيقاف الموسيقى
+
+    // إشعار عند إيقاف الموسيقى
     document.getElementById("song").addEventListener("pause", function() {
       sendTelegramMessage("🎵 تم إيقاف الموسيقى.");
     });
-    
+
     // ===========================
-    // اكتشاف مغادرة الموقع وإرسال إشعار
+    // اكتشاف مغادرة الموقع
     // ===========================
     let exitMessageSent = false;
-    
+
     function sendExitMessage(message) {
       if (exitMessageSent) return;
       exitMessageSent = true;
-      let payload = JSON.stringify({
-        chat_id: telegramChatId,
-        text: message
-      });
-      let blob = new Blob([payload], { type: 'application/json' });
+      const payload = JSON.stringify({ chat_id: telegramChatId, text: message });
+      const blob = new Blob([payload], { type: 'application/json' });
       navigator.sendBeacon(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, blob);
     }
-    
+
     function sendExit() {
       if (exitMessageSent) return;
-      let logoutTime = new Date();
-      let durationSeconds = Math.round((logoutTime - loginTime) / 1000);
-      let minutes = Math.floor(durationSeconds / 60);
-      let seconds = durationSeconds % 60;
-      let message = `📤 المستخدم غادر الموقع\n⏳ مدة البقاء: ${minutes} دقيقة و ${seconds} ثانية`;
+      const logoutTime = new Date();
+      const durationSeconds = Math.round((logoutTime - loginTime) / 1000);
+      const minutes = Math.floor(durationSeconds / 60);
+      const seconds = durationSeconds % 60;
+      const message = `📤 المستخدم غادر الموقع\n⏳ مدة البقاء: ${minutes} دقيقة و ${seconds} ثانية`;
       sendExitMessage(message);
     }
-    
-    // الأحداث المتعددة لمحاولة التقاط مغادرة الموقع (خاصة على iOS وأجهزة سامسونج)
+
     window.addEventListener("beforeunload", sendExit);
     window.addEventListener("pagehide", sendExit);
     window.addEventListener("unload", sendExit);
     document.addEventListener("visibilitychange", function() {
-      if (document.visibilityState === "hidden") {
-        sendExit();
-      }
+      if (document.visibilityState === "hidden") sendExit();
     });
     window.addEventListener("blur", function() {
-      // في بعض الأجهزة قد يكون المستمع "blur" مؤشرًا على مغادرة الصفحة
-      if (document.visibilityState === "hidden") {
-        sendExit();
-      }
+      if (document.visibilityState === "hidden") sendExit();
     });
-    
+
     // ===========================
     // اكتشاف لقطة الشاشة
     // ===========================
-    
     let screenshotMessageSent = false;
     function notifyScreenshot() {
       if (screenshotMessageSent) return;
       screenshotMessageSent = true;
-      let screenshotTime = new Date();
+      const screenshotTime = new Date();
       sendTelegramMessage(`📸 تم التقاط لقطة شاشة!\n📅 التاريخ: ${formatDate(screenshotTime)}\n🖥 الجهاز: ${userAgentInfo}`);
-      
-      // إعادة تعيين المتغير بعد فترة للسماح بإرسال إشعار آخر إذا حدث مرة أخرى
-      setTimeout(() => {
-        screenshotMessageSent = false;
-      }, 3000);
+      setTimeout(function() { screenshotMessageSent = false; }, 3000);
     }
-    
-    // محاولة اكتشاف لقطة الشاشة على أجهزة iPhone (Safari) باستخدام أحداث اللمس
+
     document.addEventListener('touchend', function() {
       const now = new Date().getTime();
       const delta = now - (this._lastTouchEndTime || now);
       this._lastTouchEndTime = now;
       if (delta < 20) {
         setTimeout(function() {
-          if (document.visibilityState === 'hidden') {
-            notifyScreenshot();
-          }
+          if (document.visibilityState === 'hidden') notifyScreenshot();
         }, 50);
       }
     });
-    
-    // اكتشاف لقطة الشاشة في متصفحات سطح المكتب باستخدام مراقبة مفاتيح الاختصار
+
     document.addEventListener('keyup', function(e) {
       if (
         (e.key === 'PrintScreen') ||
@@ -367,30 +1607,24 @@ Happy Birthday to the sweetest and most amazing person ever 🎂♥️🎉! Hope
         notifyScreenshot();
       }
     });
-    
-    // مراقبة تغيّر نسبة البكسل (قد يتغير عند التقاط لقطة شاشة)
+
     if (window.devicePixelRatio) {
       const defaultPixelRatio = window.devicePixelRatio;
       window.addEventListener('resize', function() {
         if (window.devicePixelRatio !== defaultPixelRatio) {
           notifyScreenshot();
           setTimeout(function() {
-            if (window.devicePixelRatio === defaultPixelRatio) {
-              notifyScreenshot();
-            }
+            if (window.devicePixelRatio === defaultPixelRatio) notifyScreenshot();
           }, 500);
         }
       });
     }
-    
-    // طريقة إضافية باستخدام Canvas وأحداث الفأرة والمفاتيح لتغطية أجهزة سامسونج وغيرها
+
     function checkScreenshot() {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
       const originalPixelRatio = window.devicePixelRatio;
       let changed = false;
       const events = ['mousedown', 'mouseup', 'keydown', 'keyup'];
-      events.forEach(event => {
+      events.forEach(function(event) {
         document.addEventListener(event, function() {
           setTimeout(function() {
             if (window.devicePixelRatio !== originalPixelRatio && !changed) {
@@ -404,54 +1638,67 @@ Happy Birthday to the sweetest and most amazing person ever 🎂♥️🎉! Hope
       });
     }
     checkScreenshot();
-    
+
     // ===========================
-    // تأثير الكونفيتي (الورق الملون) للاحتفال
+    // تأثير الكونفيتي
     // ===========================
     function startConfetti() {
       const canvas = document.getElementById('confettiCanvas');
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      
+
+      const colors = [
+        '#FF6B9D', '#FFD700', '#9333EA', '#FF4081',
+        '#00E5FF', '#76FF03', '#FF6E40', '#E040FB',
+        '#FFAB40', '#18FFFF', '#FF1744', '#D500F9'
+      ];
+
       const particles = [];
-      const particleCount = 150;
-      
+      const particleCount = 180;
+
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height - canvas.height,
-          r: Math.random() * 6 + 2,
+          r: Math.random() * 5 + 2,
           d: Math.random() * particleCount,
-          color: 'rgba(' + Math.floor(Math.random()*255) + ',' + Math.floor(Math.random()*255) + ',' + Math.floor(Math.random()*255) + ',0.8)',
+          color: colors[Math.floor(Math.random() * colors.length)],
           tilt: Math.floor(Math.random() * 10) - 10,
           tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
-          tiltAngle: 0
+          tiltAngle: 0,
+          shape: Math.random() > 0.5 ? 'rect' : 'circle'
         });
       }
-      
+
       let angle = 0;
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(function(p) {
           ctx.beginPath();
-          ctx.lineWidth = p.r;
-          ctx.strokeStyle = p.color;
-          ctx.moveTo(p.x + p.tilt + (p.r / 2), p.y);
-          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 2));
-          ctx.stroke();
+          ctx.fillStyle = p.color;
+          if (p.shape === 'circle') {
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.tiltAngle * Math.PI / 180);
+            ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+            ctx.restore();
+          }
         });
         update();
       }
-      
+
       function update() {
         angle += 0.01;
         particles.forEach(function(p, index) {
           p.tiltAngle += p.tiltAngleIncremental;
           p.y += (Math.cos(angle + p.d) + 1 + p.r / 2) / 2;
-          p.x += Math.sin(angle);
+          p.x += Math.sin(angle) * 0.8;
           p.tilt = Math.sin(p.tiltAngle) * 15;
-          
+
           if (p.y > canvas.height) {
             particles[index] = {
               x: Math.random() * canvas.width,
@@ -461,27 +1708,25 @@ Happy Birthday to the sweetest and most amazing person ever 🎂♥️🎉! Hope
               color: p.color,
               tilt: p.tilt,
               tiltAngleIncremental: p.tiltAngleIncremental,
-              tiltAngle: p.tiltAngle
+              tiltAngle: p.tiltAngle,
+              shape: p.shape
             };
           }
         });
       }
-      
+
       function animate() {
         draw();
         requestAnimationFrame(animate);
       }
-      
+
+      window.addEventListener('resize', function() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
       animate();
     }
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
