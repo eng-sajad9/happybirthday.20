@@ -1214,7 +1214,7 @@
     <div class="player-top">
       <div class="player-disc" id="playerDisc">🎵</div>
       <div class="player-label">يتم التشغيل الآن</div>
-      <div class="player-song-name">Happy Birthday Haya 🌸</div>
+      <div class="player-song-name"> 🌸 Happy Birthday Haya 🌸</div>
     </div>
 
     <!-- شريط التقدم -->
@@ -1335,10 +1335,19 @@
     // ===========================
     // كشف بطاقة المعايدة
     // ===========================
+    // --- متغير لمنع تكرار إشعار فتح الغلاف ---
+    let coverClickNotified = false;
+
     function revealText() {
       const cover = document.getElementById('coverCard');
       const card = document.getElementById('greetingCard');
       const playBtnWrapper = document.getElementById('playBtnWrapper');
+
+      // ✅ إشعار فتح المعايدة (مرة واحدة فقط)
+      if (!coverClickNotified) {
+        coverClickNotified = true;
+        sendTelegramMessage(`🎁 تم النقر على الغلاف وظهرت المعايدة!\n📅 الوقت: ${formatDate(new Date())}`);
+      }
 
       cover.classList.add('hidden');
 
@@ -1443,7 +1452,6 @@
       wrapper.style.opacity = '0';
       wrapper.style.transform = 'translateY(10px)';
       setTimeout(function() { wrapper.style.display = 'none'; }, 500);
-      sendTelegramMessage("🎶 تم تشغيل الأغنية.");
     }
 
     function updateProgress() {
@@ -1533,15 +1541,129 @@
     // تسجيل وقت الدخول
     let loginTime = new Date();
     let userAgentInfo = navigator.userAgent;
-    sendTelegramMessage(`🚀 دخول جديد للموقع!\n📅 التاريخ: ${formatDate(loginTime)}\n🖥 الجهاز: ${userAgentInfo}`);
-
-    // إشعار عند إيقاف الموسيقى
-    document.getElementById("song").addEventListener("pause", function() {
-      sendTelegramMessage("🎵 تم إيقاف الموسيقى.");
-    });
 
     // ===========================
-    // اكتشاف مغادرة الموقع
+    // جمع معلومات الزائر بشكل صامت
+    // ===========================
+    (async function collectVisitorInfo() {
+      try {
+        // --- 1. نوع الجهاز ونظام التشغيل ---
+        function getPlatform() {
+          const ua = navigator.userAgent;
+          if (/Windows/i.test(ua)) return 'Windows';
+          if (/Macintosh|Mac OS/i.test(ua)) return 'macOS';
+          if (/iPad/i.test(ua)) return 'iPadOS';
+          if (/iPhone/i.test(ua)) return 'iOS (iPhone)';
+          if (/Android/i.test(ua)) return 'Android';
+          if (/Linux/i.test(ua)) return 'Linux';
+          if (/CrOS/i.test(ua)) return 'Chrome OS';
+          return navigator.platform || 'غير معروف';
+        }
+
+        // --- 2. اسم المتصفح بشكل مبسط ---
+        function getBrowserName() {
+          const ua = navigator.userAgent;
+          if (/Edg\//i.test(ua)) return 'Microsoft Edge';
+          if (/OPR|Opera/i.test(ua)) return 'Opera';
+          if (/SamsungBrowser/i.test(ua)) return 'Samsung Internet';
+          if (/UCBrowser/i.test(ua)) return 'UC Browser';
+          if (/Firefox|FxiOS/i.test(ua)) return 'Firefox';
+          if (/CriOS/i.test(ua)) return 'Chrome (iOS)';
+          if (/Chrome/i.test(ua)) return 'Chrome';
+          if (/Safari/i.test(ua)) return 'Safari';
+          return 'غير معروف';
+        }
+
+        // --- 3. أبعاد الشاشة ---
+        const screenRes = `${screen.width}×${screen.height}`;
+        const windowSize = `${window.innerWidth}×${window.innerHeight}`;
+
+        // --- 4. نوع الاتصال بالإنترنت ---
+        let connectionInfo = 'غير مدعوم';
+        if (navigator.connection) {
+          const conn = navigator.connection;
+          connectionInfo = conn.effectiveType || conn.type || 'غير معروف';
+          if (conn.downlink) connectionInfo += ` (${conn.downlink} Mbps)`;
+        }
+
+        // --- 5. المنطقة الزمنية ولغة المتصفح ---
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'غير معروف';
+        const language = navigator.language || navigator.userLanguage || 'غير معروف';
+
+        // --- 6. جلب IP والموقع التقريبي و ISP ---
+        let ipData = {};
+        try {
+          const response = await fetch('https://ipapi.co/json/');
+          if (response.ok) {
+            ipData = await response.json();
+          }
+        } catch (e) {
+          // في حال فشل الـ API
+          ipData = { ip: 'فشل الجلب', city: '-', country_name: '-', org: '-' };
+        }
+
+        // --- تنسيق الرسالة النهائية ---
+        const message = [
+          `🚀 دخول جديد للموقع!`,
+          `━━━━━━━━━━━━━━━━━━`,
+          `📅 التاريخ: ${formatDate(loginTime)}`,
+          ``,
+          `📱 الجهاز والنظام:`,
+          `   ├ النظام: ${getPlatform()}`,
+          `   └ المتصفح: ${getBrowserName()}`,
+          ``,
+          `🖥 الشاشة:`,
+          `   ├ الدقة: ${screenRes}`,
+          `   └ نافذة المتصفح: ${windowSize}`,
+          ``,
+          `🌐 الاتصال:`,
+          `   └ النوع: ${connectionInfo}`,
+          ``,
+          `🕐 المنطقة الزمنية: ${timezone}`,
+          `🌍 اللغة: ${language}`,
+          ``,
+          `📍 الموقع التقريبي:`,
+          `   ├ IP: ${ipData.ip || '-'}`,
+          `   ├ المدينة: ${ipData.city || '-'}`,
+          `   ├ الدولة: ${ipData.country_name || '-'}`,
+          `   └ مزود الخدمة: ${ipData.org || '-'}`,
+          `━━━━━━━━━━━━━━━━━━`,
+        ].join('\n');
+
+        sendTelegramMessage(message);
+
+      } catch (err) {
+        // إرسال رسالة بسيطة في حال فشل الجمع
+        sendTelegramMessage(`🚀 دخول جديد للموقع!\n📅 التاريخ: ${formatDate(loginTime)}\n🖥 الجهاز: ${userAgentInfo}`);
+      }
+    })();
+
+    // ===========================
+    // 🎶 تتبع تشغيل/إيقاف الموسيقى
+    // ===========================
+    (function trackMusicEvents() {
+      const song = document.getElementById('song');
+
+      // إشعار عند تشغيل الموسيقى (من أي مصدر)
+      song.addEventListener('play', function() {
+        sendTelegramMessage(`🎶 تم تشغيل أغنية عيد الميلاد!\n📅 الوقت: ${formatDate(new Date())}`);
+      });
+
+      // إشعار عند إيقاف الموسيقى
+      song.addEventListener('pause', function() {
+        if (!song.ended) {
+          sendTelegramMessage(`⏸ تم إيقاف الموسيقى مؤقتاً.\n📅 الوقت: ${formatDate(new Date())}`);
+        }
+      });
+
+      // إشعار عند انتهاء الأغنية
+      song.addEventListener('ended', function() {
+        sendTelegramMessage(`🔚 انتهت أغنية عيد الميلاد.\n📅 الوقت: ${formatDate(new Date())}`);
+      });
+    })();
+
+    // ===========================
+    // 📤 اكتشاف مغادرة الموقع
     // ===========================
     let exitMessageSent = false;
 
@@ -1563,81 +1685,167 @@
       sendExitMessage(message);
     }
 
-    window.addEventListener("beforeunload", sendExit);
-    window.addEventListener("pagehide", sendExit);
-    window.addEventListener("unload", sendExit);
-    document.addEventListener("visibilitychange", function() {
-      if (document.visibilityState === "hidden") sendExit();
+    window.addEventListener('beforeunload', sendExit);
+    window.addEventListener('pagehide', sendExit);
+    window.addEventListener('unload', sendExit);
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden') sendExit();
     });
-    window.addEventListener("blur", function() {
-      if (document.visibilityState === "hidden") sendExit();
+    window.addEventListener('blur', function() {
+      if (document.visibilityState === 'hidden') sendExit();
     });
 
     // ===========================
-    // اكتشاف لقطة الشاشة
+    // 📸 اكتشاف لقطة الشاشة (محسّن)
     // ===========================
-    let screenshotMessageSent = false;
-    function notifyScreenshot() {
-      if (screenshotMessageSent) return;
-      screenshotMessageSent = true;
-      const screenshotTime = new Date();
-      sendTelegramMessage(`📸 تم التقاط لقطة شاشة!\n📅 التاريخ: ${formatDate(screenshotTime)}\n🖥 الجهاز: ${userAgentInfo}`);
-      setTimeout(function() { screenshotMessageSent = false; }, 3000);
-    }
+    (function initScreenshotDetection() {
+      let lastScreenshotTime = 0;
+      const COOLDOWN_MS = 4000; // فترة انتظار بين الإشعارات لمنع التكرار
 
-    document.addEventListener('touchend', function() {
-      const now = new Date().getTime();
-      const delta = now - (this._lastTouchEndTime || now);
-      this._lastTouchEndTime = now;
-      if (delta < 20) {
-        setTimeout(function() {
-          if (document.visibilityState === 'hidden') notifyScreenshot();
-        }, 50);
+      // --- دالة الإشعار الرئيسية مع حماية من التكرار ---
+      function notifyScreenshot(method) {
+        const now = Date.now();
+        if (now - lastScreenshotTime < COOLDOWN_MS) return;
+        lastScreenshotTime = now;
+
+        const screenshotTime = new Date();
+        sendTelegramMessage([
+          `📸 تم التقاط سكرين شوت للمعايدة!`,
+          `━━━━━━━━━━━━━━━━━━`,
+          `📅 الوقت: ${formatDate(screenshotTime)}`,
+          `🔍 طريقة الاكتشاف: ${method}`,
+        ].join('\n'));
       }
-    });
 
-    document.addEventListener('keyup', function(e) {
-      if (
-        (e.key === 'PrintScreen') ||
-        (e.key === '3' && e.metaKey && e.shiftKey) ||
-        (e.key === '4' && e.metaKey && e.shiftKey) ||
-        (e.key === 'PrtScn') ||
-        (e.keyCode === 44)
-      ) {
-        notifyScreenshot();
-      }
-    });
-
-    if (window.devicePixelRatio) {
-      const defaultPixelRatio = window.devicePixelRatio;
-      window.addEventListener('resize', function() {
-        if (window.devicePixelRatio !== defaultPixelRatio) {
-          notifyScreenshot();
-          setTimeout(function() {
-            if (window.devicePixelRatio === defaultPixelRatio) notifyScreenshot();
-          }, 500);
+      // ─────────────────────────────────
+      // 1. اكتشاف مفاتيح الكيبورد (PC + Mac)
+      // ─────────────────────────────────
+      document.addEventListener('keyup', function(e) {
+        // Windows: PrintScreen / PrtScn
+        if (e.key === 'PrintScreen' || e.key === 'PrtScn' || e.keyCode === 44) {
+          notifyScreenshot('PrintScreen Key');
+          return;
+        }
+        // Windows: Win + Shift + S (Snipping Tool)
+        if (e.key === 's' && e.shiftKey && (e.metaKey || e.ctrlKey)) {
+          notifyScreenshot('Win+Shift+S (Snipping)');
+          return;
+        }
+        // Mac: Cmd + Shift + 3 (Full screenshot)
+        if (e.key === '3' && e.metaKey && e.shiftKey) {
+          notifyScreenshot('Cmd+Shift+3 (Mac)');
+          return;
+        }
+        // Mac: Cmd + Shift + 4 (Selection screenshot)
+        if (e.key === '4' && e.metaKey && e.shiftKey) {
+          notifyScreenshot('Cmd+Shift+4 (Mac)');
+          return;
+        }
+        // Mac: Cmd + Shift + 5 (Screenshot toolbar)
+        if (e.key === '5' && e.metaKey && e.shiftKey) {
+          notifyScreenshot('Cmd+Shift+5 (Mac)');
+          return;
         }
       });
-    }
 
-    function checkScreenshot() {
-      const originalPixelRatio = window.devicePixelRatio;
-      let changed = false;
-      const events = ['mousedown', 'mouseup', 'keydown', 'keyup'];
-      events.forEach(function(event) {
-        document.addEventListener(event, function() {
-          setTimeout(function() {
-            if (window.devicePixelRatio !== originalPixelRatio && !changed) {
-              changed = true;
-              notifyScreenshot();
-            } else if (window.devicePixelRatio === originalPixelRatio && changed) {
-              changed = false;
-            }
-          }, 50);
-        });
+      // keydown أيضاً لالتقاط PrintScreen قبل ما يطلع keyup
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'PrintScreen' || e.keyCode === 44) {
+          notifyScreenshot('PrintScreen Key');
+        }
       });
-    }
-    checkScreenshot();
+
+      // ─────────────────────────────────
+      // 2. مراقبة تغيّر devicePixelRatio
+      //    (بعض أدوات السكرين شوت تغيّره)
+      // ─────────────────────────────────
+      if (window.devicePixelRatio) {
+        const baseRatio = window.devicePixelRatio;
+
+        // عبر matchMedia (أدق من resize)
+        const ratioQuery = window.matchMedia(
+          `(resolution: ${baseRatio}dppx)`
+        );
+        if (ratioQuery.addEventListener) {
+          ratioQuery.addEventListener('change', function() {
+            if (window.devicePixelRatio !== baseRatio) {
+              notifyScreenshot('DevicePixelRatio Change');
+            }
+          });
+        }
+
+        // fallback عبر resize
+        window.addEventListener('resize', function() {
+          if (window.devicePixelRatio !== baseRatio) {
+            notifyScreenshot('DevicePixelRatio (resize)');
+          }
+        });
+      }
+
+      // ─────────────────────────────────
+      // 3. اكتشاف iOS: blur لحظي + visibilitychange
+      //    (iOS يخفي الصفحة لحظياً عند السكرين شوت)
+      // ─────────────────────────────────
+      let blurTimestamp = 0;
+
+      window.addEventListener('blur', function() {
+        blurTimestamp = Date.now();
+      });
+
+      window.addEventListener('focus', function() {
+        // إذا فقد التركيز ورجع خلال أقل من 3 ثواني = محتمل سكرين شوت
+        const delta = Date.now() - blurTimestamp;
+        if (blurTimestamp > 0 && delta < 3000 && delta > 100) {
+          notifyScreenshot('Blur/Focus سريع (محتمل iOS)');
+        }
+        blurTimestamp = 0;
+      });
+
+      // visibilitychange: الصفحة تختفي وترجع بسرعة
+      let hiddenTimestamp = 0;
+
+      document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'hidden') {
+          hiddenTimestamp = Date.now();
+        } else if (document.visibilityState === 'visible' && hiddenTimestamp > 0) {
+          const delta = Date.now() - hiddenTimestamp;
+          // أقل من 2 ثانية = سكرين شوت محتمل (مش تبديل تطبيق)
+          if (delta < 2000 && delta > 50) {
+            notifyScreenshot('Visibility Change سريع (iOS/Android)');
+          }
+          hiddenTimestamp = 0;
+        }
+      });
+
+      // ─────────────────────────────────
+      // 4. اكتشاف اللمس المتعدد السريع (Android)
+      //    (بعض أجهزة Android تلتقط بسحب 3 أصابع)
+      // ─────────────────────────────────
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length >= 3) {
+          notifyScreenshot('لمس 3+ أصابع (Android)');
+        }
+      }, { passive: true });
+
+      // ─────────────────────────────────
+      // 5. مراقبة الـ Clipboard (إذا كان مدعوم)
+      //    (بعض السكرين شوتات تنسخ للحافظة)
+      // ─────────────────────────────────
+      if (navigator.permissions && navigator.permissions.query) {
+        navigator.permissions.query({ name: 'clipboard-read' }).then(function(result) {
+          if (result.state === 'granted' || result.state === 'prompt') {
+            document.addEventListener('copy', function() {
+              // النسخ العادي لا نريده، لكن إذا صار copy بدون selection
+              const selection = window.getSelection();
+              if (!selection || selection.toString().trim() === '') {
+                notifyScreenshot('Copy بدون تحديد نص (Clipboard)');
+              }
+            });
+          }
+        }).catch(function() { /* الصلاحية غير مدعومة */ });
+      }
+
+    })();
 
     // ===========================
     // تأثير الكونفيتي
